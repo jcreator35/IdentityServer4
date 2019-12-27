@@ -244,6 +244,8 @@ namespace IdentityServer4.Validation
                     var value = jwtRequestValidationResult.Payload[key];
                     request.Raw.Set(key, value);
                 }
+
+                request.RequestObjectValues = jwtRequestValidationResult.Payload;
             }
 
             return Valid(request);
@@ -713,17 +715,23 @@ namespace IdentityServer4.Validation
             //////////////////////////////////////////////////////////
             // check session cookie
             //////////////////////////////////////////////////////////
-            if (_options.Endpoints.EnableCheckSessionEndpoint &&
-                request.Subject.IsAuthenticated())
+            if (_options.Endpoints.EnableCheckSessionEndpoint)
             {
-                var sessionId = await _userSession.GetSessionIdAsync();
-                if (sessionId.IsPresent())
+                if (request.Subject.IsAuthenticated())
                 {
-                    request.SessionId = sessionId;
+                    var sessionId = await _userSession.GetSessionIdAsync();
+                    if (sessionId.IsPresent())
+                    {
+                        request.SessionId = sessionId;
+                    }
+                    else
+                    {
+                        LogError("Check session endpoint enabled, but SessionId is missing", request);
+                    }
                 }
                 else
                 {
-                    LogError("Check session endpoint enabled, but SessionId is missing", request);
+                    request.SessionId = ""; // empty string for anonymous users
                 }
             }
 

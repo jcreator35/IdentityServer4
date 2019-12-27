@@ -22,7 +22,7 @@ The first step is to add a new project for ASP.NET Identity to your solution.
 We provide a template that contains the minimal UI assets needed to ASP.NET Identity with IdentityServer.
 You will eventually delete the old project for IdentityServer, but there are some items that you will need to migrate over.
 
-Start by creating a the new IdentityServer project that will use ASP.NET Identity::
+Start by creating a new IdentityServer project that will use ASP.NET Identity::
     
     cd quickstart/src
     dotnet new is4aspid -n IdentityServerAspNetIdentity
@@ -56,6 +56,8 @@ The template uses the in-memory style for clients and resources, and those are s
 Finally, notice the addition of the new call to ``AddAspNetIdentity<ApplicationUser>``.
 ``AddAspNetIdentity`` adds the integration layer to allow IdentityServer to access the user data for the ASP.NET Identity user database.
 This is needed when IdentityServer must add claims for the users into tokens.
+
+Note that ``AddIdentity<ApplicationUser, IdentityRole>`` must be invoked before ``AddIdentityServer``.
 
 Config.cs
 -----------
@@ -214,6 +216,6 @@ What's Missing?
 Much of the rest of the code in this template is similar to the other quickstart and templates we provide.
 The one thing you will notice that is missing from this template is UI code for user registration, password reset, and the other things you might expect from the Visual Studio ASP.NET Identity template.
 
-Given the variety of requirements and different approaches to using ASP.NET Identity, our template deliberatly does not provide those features.
+Given the variety of requirements and different approaches to using ASP.NET Identity, our template deliberately does not provide those features.
 You are expected to know how ASP.NET Identity works sufficiently well to add those features to your project.
 Alternatively, you can create a new project based on the Visual Studio ASP.NET Identity template and add the IdentityServer features you have learned about in these quickstarts to that project.

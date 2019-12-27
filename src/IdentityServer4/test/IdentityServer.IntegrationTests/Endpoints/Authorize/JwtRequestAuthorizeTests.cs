@@ -2,25 +2,26 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Threading.Tasks;
-using Xunit;
-using FluentAssertions;
-using System.Collections.Generic;
-using IdentityServer4.Models;
-using System.Security.Claims;
-using IdentityServer4.IntegrationTests.Common;
-using IdentityServer4.Test;
-using IdentityModel;
 using System;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Microsoft.IdentityModel.Logging;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using FluentAssertions;
+using IdentityModel;
+using IdentityServer.IntegrationTests.Common;
+using IdentityServer4;
+using IdentityServer4.Configuration;
+using IdentityServer4.Models;
+using IdentityServer4.Test;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Xunit;
 
-namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
+namespace IdentityServer.IntegrationTests.Endpoints.Authorize
 {
     public class JwtRequestAuthorizeTests
     {
@@ -36,7 +37,7 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
         {
             IdentityModelEventSource.ShowPII = true;
 
-            _rsaKey = IdentityServerBuilderExtensionsCrypto.CreateRsaSecurityKey();
+            _rsaKey = CryptoHelper.CreateRsaSecurityKey();
 
             _mockPipeline.Clients.AddRange(new Client[] {
                 _client = new Client
@@ -172,8 +173,13 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             _mockPipeline.LoginRequest.Tenant.Should().Be("tenant_value");
             _mockPipeline.LoginRequest.LoginHint.Should().Be("login_hint_value");
             _mockPipeline.LoginRequest.AcrValues.Should().BeEquivalentTo(new string[] { "acr_2", "acr_1" });
+
             _mockPipeline.LoginRequest.Parameters.AllKeys.Should().Contain("foo");
             _mockPipeline.LoginRequest.Parameters["foo"].Should().Be("123foo");
+
+            _mockPipeline.LoginRequest.RequestObjectValues.Count.Should().Be(11);
+            _mockPipeline.LoginRequest.RequestObjectValues.Should().ContainKey("foo");
+            _mockPipeline.LoginRequest.RequestObjectValues["foo"].Should().Be("123foo");
         }
 
         [Fact]
@@ -215,8 +221,13 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             _mockPipeline.LoginRequest.Tenant.Should().Be("tenant_value");
             _mockPipeline.LoginRequest.LoginHint.Should().Be("login_hint_value");
             _mockPipeline.LoginRequest.AcrValues.Should().BeEquivalentTo(new string[] { "acr_2", "acr_1" });
+
             _mockPipeline.LoginRequest.Parameters.AllKeys.Should().Contain("foo");
             _mockPipeline.LoginRequest.Parameters["foo"].Should().Be("123foo");
+
+            _mockPipeline.LoginRequest.RequestObjectValues.Count.Should().Be(11);
+            _mockPipeline.LoginRequest.RequestObjectValues.Should().ContainKey("foo");
+            _mockPipeline.LoginRequest.RequestObjectValues["foo"].Should().Be("123foo");
         }
 
         [Fact]
@@ -258,8 +269,13 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             _mockPipeline.LoginRequest.Tenant.Should().Be("tenant_value");
             _mockPipeline.LoginRequest.LoginHint.Should().Be("login_hint_value");
             _mockPipeline.LoginRequest.AcrValues.Should().BeEquivalentTo(new string[] { "acr_2", "acr_1" });
+
             _mockPipeline.LoginRequest.Parameters.AllKeys.Should().Contain("foo");
             _mockPipeline.LoginRequest.Parameters["foo"].Should().Be("123foo");
+
+            _mockPipeline.LoginRequest.RequestObjectValues.Count.Should().Be(11);
+            _mockPipeline.LoginRequest.RequestObjectValues.Should().ContainKey("foo");
+            _mockPipeline.LoginRequest.RequestObjectValues["foo"].Should().Be("123foo");
         }
 
         [Fact]
@@ -310,8 +326,13 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             _mockPipeline.LoginRequest.Tenant.Should().Be("tenant_value");
             _mockPipeline.LoginRequest.LoginHint.Should().Be("login_hint_value");
             _mockPipeline.LoginRequest.AcrValues.Should().BeEquivalentTo(new string[] { "acr_2", "acr_1" });
+
             _mockPipeline.LoginRequest.Parameters.AllKeys.Should().Contain("foo");
             _mockPipeline.LoginRequest.Parameters["foo"].Should().Be("123foo");
+
+            _mockPipeline.LoginRequest.RequestObjectValues.Count.Should().Be(11);
+            _mockPipeline.LoginRequest.RequestObjectValues.Should().ContainKey("foo");
+            _mockPipeline.LoginRequest.RequestObjectValues["foo"].Should().Be("123foo");
         }
 
         [Fact]
@@ -354,11 +375,21 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             var response = await _mockPipeline.BrowserClient.GetAsync(url);
 
             _mockPipeline.LoginRequest.Should().NotBeNull();
+
             _mockPipeline.LoginRequest.Parameters["someObj"].Should().NotBeNull();
             var someObj2 = JsonConvert.DeserializeObject(_mockPipeline.LoginRequest.Parameters["someObj"], someObj.GetType());
             someObj.Should().BeEquivalentTo(someObj2);
             _mockPipeline.LoginRequest.Parameters["someArr"].Should().NotBeNull();
             var someArr2 = JsonConvert.DeserializeObject<string[]>(_mockPipeline.LoginRequest.Parameters["someArr"]);
+            someArr2.Should().Contain(new[] { "a", "c", "b" });
+            someArr2.Length.Should().Be(3);
+
+            _mockPipeline.LoginRequest.RequestObjectValues.Count.Should().Be(13);
+            _mockPipeline.LoginRequest.RequestObjectValues["someObj"].Should().NotBeNull();
+            someObj2 = JsonConvert.DeserializeObject(_mockPipeline.LoginRequest.RequestObjectValues["someObj"], someObj.GetType());
+            someObj.Should().BeEquivalentTo(someObj2);
+            _mockPipeline.LoginRequest.RequestObjectValues["someArr"].Should().NotBeNull();
+            someArr2 = JsonConvert.DeserializeObject<string[]>(_mockPipeline.LoginRequest.Parameters["someArr"]);
             someArr2.Should().Contain(new[] { "a", "c", "b" });
             someArr2.Length.Should().Be(3);
         }
@@ -736,6 +767,7 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             var response = await _mockPipeline.BrowserClient.GetAsync(url);
 
             _mockPipeline.ErrorWasCalled.Should().BeTrue();
+            _mockPipeline.LoginRequest.Should().BeNull();
 
             _mockPipeline.JwtRequestMessageHandler.InvokeWasCalled.Should().BeTrue();
         }
@@ -758,6 +790,7 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
             var response = await _mockPipeline.BrowserClient.GetAsync(url);
 
             _mockPipeline.ErrorWasCalled.Should().BeTrue();
+            _mockPipeline.LoginRequest.Should().BeNull();
 
             _mockPipeline.JwtRequestMessageHandler.InvokeWasCalled.Should().BeTrue();
         }
@@ -777,6 +810,7 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
                 });
             var response = await _mockPipeline.BrowserClient.GetAsync(url);
             _mockPipeline.ErrorWasCalled.Should().BeTrue();
+            _mockPipeline.LoginRequest.Should().BeNull();
 
             _mockPipeline.JwtRequestMessageHandler.InvokeWasCalled.Should().BeFalse();
         }
@@ -817,6 +851,7 @@ namespace IdentityServer4.IntegrationTests.Endpoints.Authorize
                 });
             var response = await _mockPipeline.BrowserClient.GetAsync(url);
             _mockPipeline.ErrorWasCalled.Should().BeTrue();
+            _mockPipeline.LoginRequest.Should().BeNull();
 
             _mockPipeline.JwtRequestMessageHandler.InvokeWasCalled.Should().BeFalse();
         }

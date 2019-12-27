@@ -4,13 +4,16 @@ We thank those who [support](https://www.patreon.com/identityserver) IdentitySer
 
 ## Corporate
 
+### Platinum
+[Udelt](https://udelt.no/)  
+[Microsoft .NET](https://github.com/dotnet-at-microsoft)
+
 ### Gold
 
 [Thinktecture AG](https://www.thinktecture.com)   ([@Thinktecture](https://twitter.com/thinktecture))  
 [Ritter Insurance Marketing](https://www.ritterim.com) ([@RitterIM](https://twitter.com/ritterim))   
 [Intuit](https://www.intuit.com) ([@IntuitDev](https://twitter.com/IntuitDev))  
 [ExtranetUserManager](https://www.extranetusermanager.com) ([@eumgr](https://twitter.com/eumgr))  
-[FireGiant](https://www.firegiant.com/) ([@firegiantco](https://twitter.com/firegiantco))  
 
 ### Silver
 
@@ -19,6 +22,8 @@ Soluto ([@SolutoEng](https://twitter.com/SolutoEng))
 Steinar	Noem  
 Effectory ([@effectory](https://twitter.com/effectory))  
 Real Page ([@RealPage](https://twitter.com/RealPage))  
+FireGiant ([@firegiantco](https://twitter.com/firegiantco))  
+Justify ([@justify_legal](https://twitter.com/justify_legal))
 
 ## Individuals
 
@@ -28,10 +33,8 @@ Arun David Shelly
 Reece Williams ([@AnEmptyReece](https://twitter.com/AnEmptyReece))  
 Alexander Zeitler ([@alexzeitler_](https://twitter.com/alexzeitler_))  
 Tobias Höft ([@tobiashoeft](https://twitter.com/tobiashoeft))  
-Richard Simpson ([@RichardSimp](https://twitter.com/RichardSimp))  
 Gusztav Varga ([@gusztavvargadr](https://twitter.com/gusztavvargadr))  
 William Grow  
-John Korsnes ([@johnkors](https://twitter.com/johnkors))  
 James Roberts  
 Chris Simmons ([@netchrisdotcom](https://twitter.com/netchrisdotcom))  
 Shawn Wildermuth  
@@ -46,8 +49,6 @@ Ibrahim Šuta ([@ibrahimsuta](https://twitter.com/ibrahimsuta))
 Dave Noderer  ([@davenoderer](https://twitter.com/davenoderer))  
 VIJAYA PAL NALLALA  
 Martijn Boland  
-Gary Ewan Park  ([@gep13](https://twitter.com/gep13))  
-Clinton Rocksmith  
 Giuseppe Turitto  
 Mauricio Schneider  
 Norman L Covington  
@@ -58,7 +59,9 @@ Erik Gulbrandsen
 Olga Klimova  
 Alexandru Puiu  
 Michael Calasanz  
-Fredrik Karlsson  ([@fredrik_zenit](https://twitter.com/fredrik_zenit))  
-Steve Graddy
-Tomáš Jurásek  ([@tomasjurasek](https://twitter.com/tomasjurasek))  
-
+Fredrik Karlsson ([@fredrik_zenit](https://twitter.com/fredrik_zenit))  
+Steve Graddy  
+Jeremy Sinclair ([@sinclairinator](https://twitter.com/sinclairinator))  
+Veikko Eeva  
+Bruno Brito  
+James Hough  

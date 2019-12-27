@@ -49,7 +49,7 @@ This options class contains properties to control the configuration store and ``
     ::
             options.DefaultSchema = "myConfigurationSchema";      
 
-If you need to change the schema for the Migration History Table, you can chain another action to the ``UserSqlServer``::
+If you need to change the schema for the Migration History Table, you can chain another action to the ``UseSqlServer``::
 
     options.ConfigureDbContext = b =>
         b.UseSqlServer(connectionString,
@@ -80,7 +80,7 @@ To use the operational store support, use the ``AddOperationalStore`` extension 
 
                 // this enables automatic token cleanup. this is optional.
                 options.EnableTokenCleanup = true;
-                options.TokenCleanupInterval = 30; // interval in seconds
+                options.TokenCleanupInterval = 3600; // interval in seconds (default is 3600)
             });
     }
 
